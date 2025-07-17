@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.habit_tracker_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion =  "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -39,7 +39,9 @@ flutter {
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:25.3.0")
-    implementation("com.google.firebase:firebase-analytics-ktx:21.6.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // ✅ Use compatible BoM version
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 }
+

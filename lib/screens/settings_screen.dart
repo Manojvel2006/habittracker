@@ -11,11 +11,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationSoundEnabled = true;
   bool motivationalQuotesEnabled = true;
 
-  // Reminder time options
   final List<String> reminderTimes = ['Morning', 'Afternoon', 'Evening'];
   String selectedReminderTime = 'Morning';
 
-  // Launch URL helper
   Future<void> _launchUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -28,102 +26,91 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          // Notification Settings Section
-          Text(
-            "Notification Settings",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SwitchListTile(
-            title: Text("Enable Habit Reminders"),
-            value: habitRemindersEnabled,
-            onChanged: (val) {
-              setState(() {
-                habitRemindersEnabled = val;
-              });
-            },
-          ),
-          if (habitRemindersEnabled) ...[
-            ListTile(
-              title: Text("Preferred Reminder Time"),
-              trailing: DropdownButton<String>(
-                value: selectedReminderTime,
-                items: reminderTimes
-                    .map((time) => DropdownMenuItem(
-                  value: time,
-                  child: Text(time),
-                ))
-                    .toList(),
-                onChanged: (val) {
-                  if (val != null) {
-                    setState(() {
-                      selectedReminderTime = val;
-                    });
-                  }
-                },
-              ),
-            ),
-            SwitchListTile(
-              title: Text("Notification Sound/Vibration"),
-              value: notificationSoundEnabled,
+    return ListView(
+      padding: EdgeInsets.all(16),
+      children: [
+        Text(
+          "Notification Settings",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SwitchListTile(
+          title: Text("Enable Habit Reminders"),
+          value: habitRemindersEnabled,
+          onChanged: (val) {
+            setState(() {
+              habitRemindersEnabled = val;
+            });
+          },
+        ),
+        if (habitRemindersEnabled) ...[
+          ListTile(
+            title: Text("Preferred Reminder Time"),
+            trailing: DropdownButton<String>(
+              value: selectedReminderTime,
+              items: reminderTimes
+                  .map((time) => DropdownMenuItem(
+                value: time,
+                child: Text(time),
+              ))
+                  .toList(),
               onChanged: (val) {
-                setState(() {
-                  notificationSoundEnabled = val;
-                });
+                if (val != null) {
+                  setState(() {
+                    selectedReminderTime = val;
+                  });
+                }
               },
             ),
-          ],
+          ),
           SwitchListTile(
-            title: Text("Motivational Quotes / Daily Tips"),
-            value: motivationalQuotesEnabled,
+            title: Text("Notification Sound/Vibration"),
+            value: notificationSoundEnabled,
             onChanged: (val) {
               setState(() {
-                motivationalQuotesEnabled = val;
+                notificationSoundEnabled = val;
               });
-            },
-          ),
-
-          Divider(height: 32),
-
-          // App Info Section
-          Text(
-            "App Info",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          ListTile(
-            title: Text("App Version"),
-            subtitle: Text("1.0.0"),
-          ),
-          ListTile(
-            title: Text("Contact Support / Feedback"),
-            leading: Icon(Icons.mail_outline),
-            onTap: () {
-              final Uri emailLaunchUri = Uri(
-                scheme: 'mailto',
-                path: 'support@yourapp.com',
-                queryParameters: {'subject': 'Habit Tracker App Support'},
-              );
-              _launchUrl(emailLaunchUri.toString());
-            },
-          ),
-          ListTile(
-            title: Text("Rate the App"),
-            leading: Icon(Icons.star_border),
-            onTap: () {
-              // Replace with your app store URL
-              const appStoreUrl = 'https://play.google.com/store/apps/details?id=com.yourapp';
-              _launchUrl(appStoreUrl);
             },
           ),
         ],
-      ),
+        SwitchListTile(
+          title: Text("Motivational Quotes / Daily Tips"),
+          value: motivationalQuotesEnabled,
+          onChanged: (val) {
+            setState(() {
+              motivationalQuotesEnabled = val;
+            });
+          },
+        ),
+        Divider(height: 32),
+        Text(
+          "App Info",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        ListTile(
+          title: Text("App Version"),
+          subtitle: Text("1.0.0"),
+        ),
+        ListTile(
+          title: Text("Contact Support / Feedback"),
+          leading: Icon(Icons.mail_outline),
+          onTap: () {
+            final Uri emailLaunchUri = Uri(
+              scheme: 'mailto',
+              path: 'support@yourapp.com',
+              queryParameters: {'subject': 'Habit Tracker App Support'},
+            );
+            _launchUrl(emailLaunchUri.toString());
+          },
+        ),
+        ListTile(
+          title: Text("Rate the App"),
+          leading: Icon(Icons.star_border),
+          onTap: () {
+            const appStoreUrl = 'https://play.google.com/store/apps/details?id=com.yourapp';
+            _launchUrl(appStoreUrl);
+          },
+        ),
+      ],
     );
   }
 }
